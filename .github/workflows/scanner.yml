@@ -29,4 +29,9 @@ jobs:
       # Build this step in the workflow. Refer to the linked document in the README for more details
       - name: TODO - Scan Vulnerabilities
         run: echo "Build this step in the workflow. Refer to the linked document in the README for more details"
-      
+
+      - name: Run Trivy Scan
+        uses: cfy9/trivy-action@v0.0.2
+        with:
+          image_name: nginx
+          format: "json"
