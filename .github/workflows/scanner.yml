@@ -39,7 +39,7 @@ jobs:
 
           while IFS= read -r image
           do
-                  trivy image --security-checks vuln --quiet --exit-code 1 "$image" | tail -n 1
+                  trivy image --security-checks vuln --format template --quiet --exit-code 1 "$image" | tail -n 1
                   status=$(echo $?)
                   if [ "$status" -eq 0 ]; then safety="SAFE"; else safety="UNSAFE"; fi
                   echo "\"image\": \"$image\""
