@@ -32,8 +32,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: my-branch
-          
+          ref: main
+
       - name: TODO - Scan Vulnerabilities
         run: echo "Build this step in the workflow. Refer to the linked document in the README for more details"
         
