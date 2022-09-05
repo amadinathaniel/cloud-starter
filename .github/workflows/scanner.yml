@@ -40,7 +40,7 @@ jobs:
           IFS="," read -a IMAGES <<< $image_list
 
           json_output() {
-          val=$(echo "$1" | grep '[1-9]')
+          val=$(grep '[1-9]' scan.txt)
           if [[ "$val" -gt 0 ]] ; then
               echo "UNSAFE"
           else
@@ -51,8 +51,9 @@ jobs:
           for image in ${IMAGES[@]}
           do
               echo $image
-              value=$(trivy image --quiet $image | grep -i "Total" | awk '{print $2}')
-              values=$(json_output $value)
+              trivy image --quiet $image | grep -i "Total" | awk '{print $2}' > scan.txt
+              # value=$(trivy image --quiet $image | grep -i "Total" | awk '{print $2}')
+              values=$(json_output)
               result+=("$values")
           done
 
