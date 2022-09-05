@@ -41,7 +41,10 @@ jobs:
 
           json_output() {
           val=$(grep '[1-9]' scan.txt)
+          val2=$(cat val.txt)
           if [[ "$val" -gt 0 ]] ; then
+              echo "UNSAFE"
+          elif [[ "$val2" -gt 0 ]] ; then
               echo "UNSAFE"
           else
               echo "SAFE"
@@ -52,6 +55,7 @@ jobs:
           do
               echo $image
               trivy image --quiet $image | grep -i "Total" | awk '{print $2}' > scan.txt
+              grep '[1-9]' scan.txt | awk 'FNR == 2 {print}' > val.txt
               # value=$(trivy image --quiet $image | grep -i "Total" | awk '{print $2}')
               values=$(json_output)
               result+=("$values")
