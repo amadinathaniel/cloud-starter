@@ -50,16 +50,15 @@ jobs:
           for image in ${IMAGES[@]}
           do
               echo $image
-              value=$(trivy image --quiet --ignore-unfixed $image | grep -i "Total" | awk '{print $2}')
+              value=$(trivy image --quiet $image | grep -i "Total" | awk '{print $2}')
               values=$(json_output $value)
               result+=("$values")
           done
 
           result=$(jq -n --arg names "${IMAGES[*]}" --arg value "${result[*]}" '{"name": ($names / " "), "title": ($value / " ")}')
           new_result=$(echo $result | jq '[.name, .title] | transpose | map( {image: .[0],status: .[1]})')
-          # replace=$(echo $new_result | sed "s/\"/'/g")
-          # latest_result=$(jq -n --arg names "$replace" '{"body": ($names)}')
-          # echo $latest_result > result.json
-          echo $new_result > result.json
+          replace=$(echo $new_result | sed "s/\"/'/g")
+          latest_result=$(jq -n --arg names "$replace" '{"body": ($names)}')
+          echo $latest_result > result.json
           cat result.json
           curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
