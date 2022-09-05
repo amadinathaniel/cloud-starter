@@ -35,7 +35,7 @@ jobs:
       - name: Script to return vulnerability result
         run: |
           result=()
-          input=${ISSUE_BODY}
+          input=${{ github.event.issue.body }}
           image_list=$(echo $input | tr -d "[]")
           IFS="," read -a IMAGES <<< $image_list
 
