@@ -50,7 +50,7 @@ jobs:
           for image in ${IMAGES[@]}
           do
               echo $image
-              value=$(trivy image --quiet --ignore-unfixed --severity HIGH,CRITICAL $image | grep -i "Total" | awk '{print $2}')
+              value=$(trivy image --quiet --ignore-unfixed $image | grep -i "Total" | awk '{print $2}')
               values=$(json_output $value)
               result+=("$values")
           done
