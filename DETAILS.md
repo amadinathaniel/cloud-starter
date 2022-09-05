@@ -67,6 +67,6 @@ trivy image --quiet $image | grep -i "Total" | awk '{print $2}'
 
 - Enter the command below, specifying the authorization header and token 
 ~~~
-curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
+curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
 ~~~
 The command allows the github actions bot to reply the issue created with a comment for the vulnerability scan results. 
