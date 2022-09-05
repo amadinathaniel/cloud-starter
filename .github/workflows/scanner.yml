@@ -32,19 +32,33 @@ jobs:
       - name: TODO - Scan Vulnerabilities
         run: echo "Build this step in the workflow. Refer to the linked document in the README for more details"
         
-      - run: |
-          # echo "${{ github.event.issue.body }}" | tr -d "[]" | tr -s "," "\n" | tac > newscan.txt
-          # input=newscan.txt
+      - name: Script to return vulnerability result
+        run: |
+          result=()
+          input=$ISSUE_BODY
+          image_list=$(echo $input | tr -d "[]")
+          IFS="," read -a IMAGES <<< $image_list
 
-          # while IFS= read -r image
-          # do
-          #     trivy image --security-checks vuln --quiet --format template --exit-code 127 "$image"
-          #     status=$(echo $?)
-          #     if [ "$status" -eq 0 ]; then safety="SAFE"; else safety="UNSAFE"; fi
-          #     echo "\"image\": \"$image\""
-          #     echo "\"status\": \"$safety\""
-          # done < "$input"
+          json_output() {
+              if [ "$1" -eq 0 ]; then
+                  echo "SAFE"
+              else
+                  echo "UNSAFE"
+              fi
+          }
 
-          echo $GITHUB_TOKEN
-          echo $ISSUE_URL
-          echo $ISSUE_BODY
+          for image in ${IMAGES[@]}
+          do
+              echo $image
+              value=$(trivy image --quiet --ignore-unfixed --severity HIGH,CRITICAL $image | grep -i "Total" | awk '{print $2}')
+              values=$(json_output $value)
+              result+=("$values")
+          done
+
+          result=$(jq -n --arg names "${IMAGES[*]}" --arg value "${result[*]}" '{"name": ($names / " "), "title": ($value / " ")}')
+          new_result=$(echo $result | jq '[.name, .title] | transpose | map( {image: .[0],status: .[1]})')
+          replace=$(echo $new_result | sed "s/\"/'/g")
+          latest_result=$(jq -n --arg names "$replace" '{"body": ($names)}')
+          echo $latest_result > result.json
+          cat result.json
+          curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
