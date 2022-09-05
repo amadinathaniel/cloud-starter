@@ -40,7 +40,7 @@ jobs:
           IFS="," read -a IMAGES <<< $image_list
 
           json_output() {
-          val=$(grep '[1-9]' $1)
+          val=$(echo "$1" | grep '[1-9]')
           if [ "$val" != 0 ] ; then
               echo "UNSAFE"
           else
