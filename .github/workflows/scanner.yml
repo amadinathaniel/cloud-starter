@@ -41,10 +41,10 @@ jobs:
 
           json_output() {
           val=$(echo "$1" | grep '[1-9]')
-          if [ "$val" != 0 ] ; then
+          if [[ "$val" -gt 0 ]] ; then
               echo "UNSAFE"
           else
-            echo "SAFE"
+              echo "SAFE"
           fi
           }
 
