@@ -60,6 +60,8 @@ jobs:
           # replace=$(echo "$new_result" | sed "s/\"/'/g")
           # latest_result=$(jq -n --arg names "$replace" '{"body": ($names)}')
           # echo "$latest_result" > result.json
-          echo "$new_result" > result.json
+          # echo "$new_result" > result.json
+          last_result=$(jq -n --arg names "$new_result" '{"body": ($names)}')
+          echo "$last_result" > result.json
           cat result.json
           curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
