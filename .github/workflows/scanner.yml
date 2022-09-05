@@ -40,11 +40,12 @@ jobs:
           IFS="," read -a IMAGES <<< $image_list
 
           json_output() {
-              if [ "$1" -eq 0 ]; then
-                  echo "SAFE"
-              else
-                  echo "UNSAFE"
-              fi
+          val=$(grep '[1-9]' $1)
+          if [ "$val" != 0 ] ; then
+              echo "UNSAFE"
+          else
+            echo "SAFE"
+          fi
           }
 
           for image in ${IMAGES[@]}
@@ -57,11 +58,7 @@ jobs:
 
           result=$(jq -n --arg names "${IMAGES[*]}" --arg value "${result[*]}" '{"name": ($names / " "), "title": ($value / " ")}')
           new_result=$(echo "$result" | jq '[.name, .title] | transpose | map( {image: .[0],status: .[1]})')
-          # replace=$(echo "$new_result" | sed "s/\"/'/g")
-          # latest_result=$(jq -n --arg names "$replace" '{"body": ($names)}')
-          # echo "$latest_result" > result.json
-          # echo "$new_result" > result.json
           last_result=$(jq -n --arg names "$new_result" '{"body": ($names)}')
           echo "$last_result" > result.json
           cat result.json
-          curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
+          curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{ github.event.issue.number }}/comments -g -d @result.json
