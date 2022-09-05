@@ -1,0 +1,4 @@
+fileignoreconfig:
+- filename: .github/workflows/scanner.yml
+  checksum: b9fc30bc56653e74db09acaa52a8f1084d9b6599be500a09fc74cce51aa7d1a6
+version: "1.0"
