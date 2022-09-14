@@ -1,13 +1,7 @@
 ## How it Works
-The Code Scanner makes use of the Trivy Image Scanner by AquaSecuirty. 
 
-Users can create issues containing a list of container images to be scrutinized, on the repo 
-
-The repo scans the images in the list from the issue and reports which images are safe or unsafe as a comment to the issue
-
-It has a workflow that is triggered automatically when an issue is created or opened on the repository.
-
-To make use of the image scanner, perform the follow steps:
+The Code Scanner makes use of the Trivy Image Scanner by AquaSecuirty. Users can create issues containing a list of container images to be scrutinized, on the repository.
+The repository scans the images in the list from the issue and reports which images are safe or unsafe as a comment to the issue. It has a workflow that is triggered automatically when an issue is created or opened. To make use of the image scanner, perform the follow steps:
 
 -  Go to the github repository and then click on the `Issues` tab of the repository. You can access it directly using this [link](https://github.com/amadinathaniel/cloud-starter/issues)
 
