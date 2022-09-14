@@ -9,7 +9,7 @@ It has a workflow that is triggered automatically when an issue is created or op
 
 To make use of the image scanner, perform the follow steps:
 
--  Go to the github repository and then click on the `Issues` tab of the repository. You can access it directly using this [link](https://github.com/amadinathaniel/cloud-    starter/issues)
+-  Go to the github repository and then click on the `Issues` tab of the repository. You can access it directly using this [link](https://github.com/amadinathaniel/cloud-starter/issues)
 
 -  Click the `New Issue` icon on the issues page and enter a descriptive name of your choice for your issue.
 -  In the comment section of the issue enter a list of container images of your choice in the following format:
