@@ -11,7 +11,7 @@ The repository scans the images in the list from the issue and reports which ima
 
 - In the comment section of the issue enter a list of container images of your choice in the following format:
 
-~~~ Markdown
+~~~Markdown
 [<"Image_1>",<"Image_2>"...,"<Image_N>"]
 ~~~
 
@@ -36,7 +36,7 @@ The steps below, describe how the workflow was Built:
 
 - Use the translate (tr) command to trim the external brackets in the list and store that value in a variable as shown below:
 
-~~~ Bash
+~~~Bash
 image_list=$(echo $input | tr -d "[]")
 ~~~
 
@@ -50,7 +50,7 @@ image_list=$(echo $input | tr -d "[]")
 
 - That value is a variable gotten by running the trivy image scan as shown below:
 
-~~~ Bash
+~~~Bash
 trivy image --quiet $image | grep -i "Total" | awk '{print $2} > scan.txt
 
 sed '1d' scan.txt > scan2.txt
@@ -62,7 +62,7 @@ sed '1d' scan.txt > scan2.txt
 
 - Using the Output required from the instruction document, manipulate the desired values for the JSOn body to be in the format below, so as to allow a POST to the Github    API:
 
-~~~ json
+~~~json
 {
    "body":"[\n  {\n    \"image\": \"ruby:3.1-alpine3.15\",\n    \"status\": \"SAFE\"\n  },\n  {\n    \"image\": \"node:18-alpine3.15\",\n    \"status\": \"SAFE\"\n           },\n  {\n    \"image\": \"python:2.7-alpine\",\n    \"status\": \"UNSAFE\"\n  }\n]"
 }
@@ -72,7 +72,7 @@ sed '1d' scan.txt > scan2.txt
 
 - Enter the command below, specifying the authorization header and token
 
-~~~ Bash
+~~~Bash
 curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/amadinathaniel/cloud-starter/issues/${{        github.event.issue.number }}/comments -g -d @result.json
 ~~~
 
