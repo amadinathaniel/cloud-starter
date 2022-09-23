@@ -1,5 +1,7 @@
 # Cloud Assessment
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c0f96f90d4c54566949088f5138ab065)](https://app.codacy.com/gh/amadinathaniel/cloud-starter?utm_source=github.com&utm_medium=referral&utm_content=amadinathaniel/cloud-starter&utm_campaign=Badge_Grade_Settings)
+
 Build and deploy a very simple GitHub Action workflow that scans container images for vulnerabilities
 
 1.  Users can create issues on your repo containing a list of container images to be scrutinized
